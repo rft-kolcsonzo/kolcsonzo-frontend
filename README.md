@@ -6,7 +6,7 @@
 UI of a simple car rental software made for a university project. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Requirements
-- node.js
+- Node >=8.10.0
 
 ## Installation
 Simply clone the project and install dependencies via
