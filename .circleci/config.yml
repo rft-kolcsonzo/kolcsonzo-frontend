@@ -19,6 +19,8 @@ jobs:
     steps:
       - checkout
 
+      - setup_remote_docker
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -26,7 +28,9 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: "Install dependencies"
+          command: yarn install
 
       - save_cache:
           paths:
@@ -34,7 +38,17 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
         
       # run tests!
-      - run: yarn test
+      - run:
+          name: "Run tests"
+          command: yarn test
+
+      - run:
+          name: "Build React app"
+          command: yarn build
+
+      - run:
+          name: "Build Docker image"
+          command: docker build --build-arg VCS_REF=`git rev-parse --short $CIRCLE_SHA1` -t clearcodesolutions/kolcsonzo-ui:$CIRCLE_SHA1 .
 
 
 
