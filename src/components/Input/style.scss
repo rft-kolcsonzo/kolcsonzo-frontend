@@ -1,0 +1,32 @@
+@mixin placeholder {
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}
+
+.input {
+  border-radius: 2px;
+  border: 1px solid #234ef8;
+  padding: 15px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #234ef8;
+  box-sizing: border-box;
+
+  @include placeholder {
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #90a4ef;
+  }
+}

@@ -1,0 +1,30 @@
+.login-box {
+  box-sizing: border-box;
+  max-width: 370px;
+  background: #ffffff;
+  border: 1px solid #dfdfdf;
+  box-shadow: 0 0 28px 8px rgba(0, 0, 0, 0.1);
+  padding: 88px 55px;
+  text-align: center;
+
+  h1 {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 31px;
+    line-height: 42px;
+    color: #224ff7;
+  }
+
+  .content {
+    margin-bottom: 40px;
+
+    .field {
+      width: 100%;
+      margin-bottom: 20px;
+
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
