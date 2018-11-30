@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
-import LoginPage from '../LoginPage'
+import { Provider } from 'react-redux'
+import Router from '../Router'
 import './style.scss'
+import { configureStore } from '../../commons'
 
 class App extends Component {
   render() {
     return (
       <div className="fill-window app">
-        <LoginPage />
+        <Provider store={configureStore()}>
+          <Router />
+        </Provider>
       </div>
     )
   }
