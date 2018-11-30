@@ -8,7 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:8.10
-      
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -24,31 +24,55 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
       - run:
-          name: "Install dependencies"
+          name: 'Install dependencies'
           command: yarn install
 
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       # run tests!
       - run:
-          name: "Run tests"
+          name: 'Run tests'
           command: yarn test
 
       - run:
-          name: "Build React app"
+          name: 'Build React app'
           command: yarn build
 
       - run:
-          name: "Build Docker image"
+          name: 'Build Docker image'
           command: docker build --build-arg VCS_REF=`git rev-parse --short $CIRCLE_SHA1` -t clearcodesolutions/kolcsonzo-ui:$CIRCLE_SHA1 .
 
+      - deploy:
+          name: 'Push docker image(s) to Docker Hub'
+          command: |
+            case $CIRCLE_BRANCH in
+            "master")
+              DOCKER_RELEASE_TAG=latest
+              ;;
+            "develop")
+              DOCKER_RELEASE_TAG=edge
+              ;;
+            esac
 
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker push clearcodesolutions/kolcsonzo-ui:$CIRCLE_SHA1
 
+            if [ ! -z "$DOCKER_RELEASE_TAG" ]
+            then
+              docker tag clearcodesolutions/kolcsonzo-ui:$CIRCLE_SHA1 clearcodesolutions/kolcsonzo-ui:$DOCKER_RELEASE_TAG
+              docker push clearcodesolutions/kolcsonzo-ui:$DOCKER_RELEASE_TAG
+            fi
+
+            if [ ! -z "$CIRCLE_TAG" ]
+            then
+              docker tag clearcodesolutions/kolcsonzo-ui:$CIRCLE_SHA1 clearcodesolutions/kolcsonzo-ui:$CIRCLE_TAG
+              docker push clearcodesolutions/kolcsonzo-ui:$CIRCLE_TAG
+            fi
