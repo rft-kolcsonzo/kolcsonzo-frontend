@@ -1,8 +1,12 @@
-import React from 'react'
-import IconButton from '../IconButton'
-import HamburgerIcon from '../../assets/img/hamburger.svg'
-import './style.scss'
+import MenuButton from './component'
+import { connect } from 'react-redux'
+import { toggleMenuVisibility } from '../../actions'
 
-export default function MenuButton() {
-  return <IconButton src={HamburgerIcon} className="menu-btn" />
-}
+export default connect(
+  state => ({
+    menuVisible: state.app.get('menuOpen'),
+  }),
+  dispatch => ({
+    toggleMenuVisibility: visible => dispatch(toggleMenuVisibility()),
+  })
+)(MenuButton)

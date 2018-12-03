@@ -1,6 +1,12 @@
+@import '../../sass/responsive.scss';
+
 .dashboard {
   padding: 30px;
   box-sizing: border-box;
-  max-width: 1400px;
-  margin: auto;
+  max-width: calc(100% - 295px);
+  margin: 0;
+
+  @include tablet {
+    max-width: 100%;
+  }
 }

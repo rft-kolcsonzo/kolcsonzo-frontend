@@ -1,6 +1,6 @@
 <svg width="28px" height="24px" viewBox="0 0 28 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Dashboard" transform="translate(-1456.000000, -95.000000)" stroke="#FFFFFF" stroke-width="3.3">
+        <g id="Dashboard" transform="translate(-1456.000000, -95.000000)" stroke="#224ff7" stroke-width="3.3">
             <g id="hamburger-btn" transform="translate(1446.000000, 84.000000)">
                 <g id="hamburger" transform="translate(12.105263, 12.912281)">
                     <path d="M-2.84217094e-14,0.550239234 L24.2105263,0.550239234" id="Stroke-1"></path>

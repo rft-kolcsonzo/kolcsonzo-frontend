@@ -1,5 +1,11 @@
 .menu-btn {
   padding: 10px;
+  background: #fff;
+
+  &.menu-visible {
+    background: #224ff7;
+  }
+
   img {
     height: 21px;
   }

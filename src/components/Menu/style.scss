@@ -1,3 +1,5 @@
+@import '../../sass/responsive.scss';
+
 .menu-container {
   position: fixed;
   right: 0;
@@ -12,6 +14,31 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 300ms;
+
+  .close-btn {
+    display: none;
+  }
+
+  @include tablet {
+    transform: translate3d(100%, 0, 0);
+
+    .close-btn {
+      display: block;
+      position: absolute;
+      right: 30px;
+      top: 20px;
+      padding: 5px;
+    }
+  }
+
+  @include mobile {
+    left: 0;
+  }
+
+  &.visible {
+    transform: translate3d(0, 0, 0);
+  }
 
   a {
     color: #fff;
@@ -19,10 +46,20 @@
   }
 
   nav li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+
     a {
       font-size: 20px;
-      display: block;
+      display: flex;
+      justify-content: flex-start;
+      align-content: center;
+      padding: 8px 5px;
+    }
+
+    &:hover a,
+    a.active {
+      background: #fff;
+      color: #224ff7;
     }
 
     &:last-of-type {
