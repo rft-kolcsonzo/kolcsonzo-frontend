@@ -1,0 +1,11 @@
+<svg width="8px" height="5px" viewBox="0 0 8 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Dashboard" transform="translate(-344.000000, -245.000000)" fill="#222436">
+            <g id="table" transform="translate(98.000000, 228.000000)">
+                <g id="up" transform="translate(245.000000, 17.000000)">
+                    <path d="M1.027,4.659 C1.081,4.775 1.196,4.849 1.324,4.849 L8.674,4.849 C8.802,4.849 8.917,4.775 8.971,4.659 C9.023,4.543 9.003,4.406 8.918,4.309 L5.244,0.111 C5.182,0.04 5.093,0 4.999,0 C4.905,0 4.816,0.04 4.754,0.111 L1.08,4.31 C0.995,4.406 0.976,4.543 1.027,4.659 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

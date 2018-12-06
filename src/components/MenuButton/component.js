@@ -3,7 +3,7 @@ import IconButton from '../IconButton'
 import HamburgerIcon from '../../assets/img/hamburger.svg'
 import './style.scss'
 
-export default function MenuButton({ toggleMenuVisibility }) {
+function MenuButton({ toggleMenuVisibility }) {
   function handleClick() {
     toggleMenuVisibility()
   }
@@ -16,3 +16,5 @@ export default function MenuButton({ toggleMenuVisibility }) {
     />
   )
 }
+
+export default React.memo(MenuButton)
