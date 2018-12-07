@@ -52,10 +52,6 @@ export default class Table extends React.Component {
     )
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   /**
    * Selects a specific row.
    * @param {number} index Index of the row to be selected.
@@ -97,7 +93,7 @@ export default class Table extends React.Component {
   }
 
   get header() {
-    const { selectable, sortable, children } = this.props
+    const { selectable, sortable } = this.props
     const header = React.Children.toArray(this.props.children)
       .filter(child => child.type === Header)
       .pop()

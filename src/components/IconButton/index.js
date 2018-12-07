@@ -1,10 +1,12 @@
 import React from 'react'
-import Button from '../Button'
+import './style.scss'
 
-export default function IconButton({ src, ...otherProps }) {
+export default function IconButton({ src, className, ...otherProps }) {
+  const classNames = ['icon-button', className].join(' ').trim()
+
   return (
-    <Button {...otherProps}>
+    <button className={classNames} {...otherProps}>
       <img src={src} alt="" />
-    </Button>
+    </button>
   )
 }

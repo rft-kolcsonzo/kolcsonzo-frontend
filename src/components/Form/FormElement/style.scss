@@ -1,0 +1,42 @@
+.form-element {
+  display: inline-block;
+  margin: 10px 0;
+  position: relative;
+
+  .label {
+    font-weight: 500;
+    margin-bottom: 7px;
+    font-size: 14px;
+    color: #8b959c;
+  }
+
+  .error-container {
+    background: #f72121;
+    padding: 10px;
+    border-radius: 2px;
+    color: #fff;
+    position: absolute;
+    display: none;
+
+    ul {
+      list-style: inside square;
+    }
+  }
+
+  &.error {
+    .label:after {
+      content: '❌';
+      font-size: 11px;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    .input {
+      border-color: #f72121;
+    }
+
+    .error-container {
+      display: block;
+    }
+  }
+}

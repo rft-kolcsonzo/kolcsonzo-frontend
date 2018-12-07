@@ -1,10 +1,17 @@
 .checkbox-container {
+  cursor: pointer;
+  user-select: none;
+
   input {
     visibility: hidden;
     display: block;
     width: 0px;
     height: 0px;
     position: absolute;
+  }
+
+  .label {
+    margin-left: 5px;
   }
 
   .checkbox {
@@ -17,7 +24,6 @@
     justify-content: center;
     align-items: center;
     transition: background 250ms;
-    cursor: pointer;
 
     img {
       opacity: 0;

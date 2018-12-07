@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './style.scss'
-import Input from '../Input'
+import TextInput from '../TextInput'
 import Button from '../Button'
 
 export default class LoginBox extends Component {
@@ -27,13 +27,13 @@ export default class LoginBox extends Component {
         <h1>Bejelentkezés</h1>
 
         <div className="content">
-          <Input
+          <TextInput
             type="text"
             placeholder="e-mail"
             name="email"
             className="field"
           />
-          <Input
+          <TextInput
             type="password"
             placeholder="jelszó"
             name="password"

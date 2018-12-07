@@ -6,13 +6,15 @@ import './style.scss'
 
 export default class Checkbox extends Component {
   static propTypes = {
-    label: PropTypes.element,
+    label: PropTypes.node,
     checked: PropTypes.bool,
+    defaultChecked: PropTypes.bool,
     onChange: PropTypes.func,
   }
 
   static defaultProps = {
     checked: undefined,
+    defaultChecked: undefined,
   }
 
   state = {
@@ -24,6 +26,8 @@ export default class Checkbox extends Component {
 
     if (typeof props.checked !== 'undefined') {
       this.state.checked = props.checked
+    } else if (typeof props.defaultChecked !== 'undefined') {
+      this.state.checked = props.defaultChecked
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -71,19 +75,21 @@ export default class Checkbox extends Component {
   }
 
   render() {
-    const { label } = this.props
+    const { label, defaultChecked: _, ...otherProps } = this.props
     const { checked } = this.state
 
     return (
-      <span className="checkbox-container">
-        <input type="checkbox" checked={checked} onChange={this.handleChange} />
-        <span
-          className={`checkbox${checked ? ' checked' : ''}`}
-          onClick={this.handleClick}
-        >
+      <span className="checkbox-container" onClick={this.handleClick}>
+        <input
+          {...otherProps}
+          type="checkbox"
+          checked={checked}
+          onChange={this.handleChange}
+        />
+        <span className={`checkbox${checked ? ' checked' : ''}`}>
           <img src={TickIcon} alt="" />
         </span>
-        {label ? label : null}
+        {label ? <span className="label">{label}</span> : null}
       </span>
     )
   }

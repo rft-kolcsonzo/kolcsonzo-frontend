@@ -26,17 +26,17 @@ function Menu({ visible, closeMenu, className }) {
       <nav>
         <ul>
           <li>
-            <NavLink to="/dashboard/users" activeClassName="active">
+            <NavLink to="/-/users" activeClassName="active">
               Felhasználók
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/cars" activeClassName="active">
+            <NavLink to="/-/cars" activeClassName="active">
               Gépkocsipark
             </NavLink>
           </li>
           <li>
-            <NavLink to="/dashboard/orders" activeClassName="active">
+            <NavLink to="/-/orders" activeClassName="active">
               Bérlések
             </NavLink>
           </li>
