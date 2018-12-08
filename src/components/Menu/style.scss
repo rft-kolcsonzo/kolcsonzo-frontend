@@ -26,6 +26,10 @@
   @include tablet {
     transform: translate3d(100%, 0, 0);
 
+    &:hover {
+      box-shadow: none;
+    }
+
     .close-btn {
       display: block;
       position: absolute;

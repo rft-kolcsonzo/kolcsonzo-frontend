@@ -3,15 +3,22 @@ import React from 'react'
 import FormElement from './component'
 import FormErrorContext from '../context'
 
-function WrappedFormElement({ name, ...otherProps }) {
+function WrappedFormElement({
+  name,
+  errors: explicitErrors = [],
+  ...otherProps
+}) {
   if (name) {
     return (
       <FormErrorContext.Consumer>
         {errors => (
           <FormElement
-            errors={errors
-              .filter(([field]) => field === name)
-              .map(([, msg]) => msg)}
+            errors={[
+              ...explicitErrors,
+              ...errors
+                .filter(([field]) => field === name)
+                .map(([, msg]) => msg),
+            ]}
             {...otherProps}
           />
         )}

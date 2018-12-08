@@ -1,8 +1,18 @@
+@import '../../../sass/responsive.scss';
+
 .form-row {
+  position: relative;
+
   > * {
     margin-right: 15px;
 
     &:last-of-type {
+      margin-right: 0;
+    }
+  }
+
+  @include mobile {
+    > * {
       margin-right: 0;
     }
   }

@@ -25,9 +25,9 @@ export default class UsersForm extends Component {
 
   validator = new ValidatorFactory()
     .field('firstname', 'lastname', 'email')
-    .notEmpty()
+    .notEmpty('a mező kitöltése kötelező!')
     .field('email')
-    .email()
+    .email('valós e-mail címet adj meg!')
     .create()
 
   constructor(props) {
@@ -53,6 +53,11 @@ export default class UsersForm extends Component {
           </FormElement>
           <FormElement name="firstname" label="Keresztnév">
             <TextInput name="firstname" defaultValue={user.get('firstname')} />
+          </FormElement>
+        </FormRow>
+        <FormRow>
+          <FormElement name="password" label="Jelszó">
+            <TextInput type="password" name="password" />
           </FormElement>
         </FormRow>
         <FormRow>

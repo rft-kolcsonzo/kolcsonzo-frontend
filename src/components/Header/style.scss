@@ -16,4 +16,10 @@
       display: block;
     }
   }
+
+  @include mobile {
+    h1 {
+      font-size: 20px;
+    }
+  }
 }
