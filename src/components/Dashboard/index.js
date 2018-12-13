@@ -8,6 +8,7 @@ import './style.scss'
 
 const Users = lazy(() => import('../Users'))
 const DashboardHome = lazy(() => import('../DashboardHome'))
+const Cars = lazy(() => import('../Cars'))
 
 function LazyComponent(Component) {
   return props => <Component {...props} />
@@ -32,7 +33,7 @@ export default function Dashboard({ children, match, location }) {
               />
               <Route
                 path={`${match.url}/cars`}
-                component={() => <div>hi</div>}
+                component={LazyComponent(Cars)}
               />
               <Route
                 path={`${match.url}/orders`}

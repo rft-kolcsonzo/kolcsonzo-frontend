@@ -26,7 +26,7 @@ function WrappedFormElement({
     )
   }
 
-  return <FormElement {...otherProps} />
+  return <FormElement errors={explicitErrors} {...otherProps} />
 }
 
 export default React.memo(WrappedFormElement)

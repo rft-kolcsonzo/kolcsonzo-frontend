@@ -34,6 +34,7 @@
 
   @include mobile {
     font-size: 16px;
+    padding: 14px;
 
     @include placeholder {
       font-size: 16px;
