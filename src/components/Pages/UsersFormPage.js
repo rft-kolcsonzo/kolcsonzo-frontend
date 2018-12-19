@@ -5,6 +5,7 @@ import Immutable, { Map } from 'immutable'
 import { Title } from '../Header'
 import { APIContext } from '../../commons'
 import UsersForm from '../UsersForm'
+import Spinner from '../Spinner'
 
 export default class UsersFormPage extends Component {
   static propTypes = {
@@ -36,7 +37,7 @@ export default class UsersFormPage extends Component {
     const { user } = this.state
 
     if (!user) {
-      return null
+      return <Spinner size="big" />
     }
 
     return (

@@ -159,6 +159,7 @@ class CarsForm extends Component {
           >
             <TextInput
               name="insurance_until_date"
+              mask="9999-99-99"
               defaultValue={car.get('insurance_until_date')}
             />
           </FormElement>

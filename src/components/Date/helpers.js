@@ -2,13 +2,24 @@ import { MonthNames } from './constants'
 
 export const dateComponents = (startDate, endDate) => {
   const startDay = startDate.getDate()
-  const endDay = endDate.getDate()
-  const sameMonth = startDate.getMonth() === endDate.getMonth()
+  const endDay = endDate && !isNaN(endDate) ? endDate.getDate() : -1
+  const startMonth = startDate.getMonth()
+  const endMonth = endDate && !isNaN(endDate) ? endDate.getMonth() : -1
+  const sameMonth = startMonth === endMonth
   const sameDay = sameMonth && startDay === endDay
-  const startMonth = MonthNames[startDate.getMonth()]
-  const endMonth = MonthNames[endDate.getMonth()]
+  const startMonthName = MonthNames[startDate.getMonth()]
+  const endMonthName = MonthNames[endDate.getMonth()]
 
-  return { sameMonth, sameDay, startMonth, endMonth, startDay, endDay }
+  return {
+    sameMonth,
+    sameDay,
+    startMonth,
+    endMonth,
+    startMonthName,
+    endMonthName,
+    startDay,
+    endDay,
+  }
 }
 
 export const dayDiff = (a, b) =>

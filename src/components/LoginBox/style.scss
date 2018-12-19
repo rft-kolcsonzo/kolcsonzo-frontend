@@ -1,3 +1,5 @@
+@import '../../sass/responsive.scss';
+
 .login-box {
   box-sizing: border-box;
   max-width: 370px;
@@ -7,10 +9,15 @@
   padding: 88px 55px;
   text-align: center;
 
+  @include mobile {
+    box-shadow: none;
+    border: none;
+  }
+
   h1 {
     font-size: 32px;
     font-weight: 300;
-    margin-bottom: 31px;
+    margin-bottom: 20px;
     line-height: 42px;
     color: #224ff7;
   }

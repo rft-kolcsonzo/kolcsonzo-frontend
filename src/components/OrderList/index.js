@@ -9,10 +9,16 @@ import { DateInterval, dayDiff } from '../Date'
 export default function OrderList({ orders, deleteOrder, getPrintUrl }) {
   function renderRow({ data: order, ...otherProps }) {
     const orderId = order.get('rent_id')
-    const startDate = new Date(order.get('start_date'))
-    const endDate = order.get('end_date') && new Date(order.get('end_date'))
-    const duration = dayDiff(endDate, startDate)
     const closed = !order.get('rent_status')
+    const startDate = new Date(order.get('start_date'))
+    let endDate = new Date(order.get('end_date'))
+    let duration = 0
+
+    if (endDate instanceof Date && !isNaN(endDate)) {
+      duration = dayDiff(endDate, startDate)
+    } else {
+      endDate = null
+    }
 
     function handleOrderDelete() {
       if (window.confirm('Biztosan törölni akarja ezt a bérlést?')) {
@@ -24,12 +30,8 @@ export default function OrderList({ orders, deleteOrder, getPrintUrl }) {
       <Row key={orderId} {...otherProps}>
         <Column>{order.get('plate_number')}</Column>
         <Column>
-          {endDate && (
-            <span>
-              {<DateInterval startDate={startDate} endDate={endDate} />} (
-              {duration} nap)
-            </span>
-          )}
+          <DateInterval startDate={startDate} endDate={endDate} />{' '}
+          {endDate && `(${duration} nap`}
         </Column>
         <Column>{order.get('daily_rent_price', 0)} Ft</Column>
         <Column>{order.get('rent_total', 0)} Ft</Column>

@@ -80,7 +80,8 @@ class OrderForm extends Component {
     const endDate = order.get('end_date')
       ? new Date(order.get('end_date'))
       : null
-    const duration = endDate ? dayDiff(endDate, startDate) : 0
+    const duration =
+      endDate && !isNaN(endDate) ? dayDiff(endDate, startDate) : 0
 
     this.state = {
       loading: false,
@@ -135,7 +136,12 @@ class OrderForm extends Component {
       endDate = new Date(e.target.value)
     }
 
-    if (startDate instanceof Date && endDate instanceof Date) {
+    if (
+      startDate instanceof Date &&
+      endDate instanceof Date &&
+      !isNaN(startDate) &&
+      !isNaN(endDate)
+    ) {
       duration = dayDiff(endDate, startDate)
 
       if (duration < 0) {

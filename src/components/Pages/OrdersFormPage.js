@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Immutable, { Map, List } from 'immutable'
+import Immutable, { Map } from 'immutable'
 
 import { Title } from '../Header'
 import { APIContext } from '../../commons'
 import OrderForm from '../OrderForm'
+import Spinner from '../Spinner'
 
 export default class OrdersFormPage extends Component {
   static propTypes = {
@@ -13,7 +14,7 @@ export default class OrdersFormPage extends Component {
 
   state = {
     order: null,
-    cars: List(),
+    cars: null,
   }
 
   static contextType = APIContext
@@ -23,26 +24,24 @@ export default class OrdersFormPage extends Component {
   }
 
   componentDidMount() {
-    this.context
-      .fetchCars({ available: true })
-      .then(cars => this.setState({ cars: Immutable.fromJS(cars) }))
-
     if (this.orderId) {
       this.context
         .fetchOrder(this.orderId)
         .then(order => this.setState({ order: Immutable.fromJS(order) }))
-
-      return
+    } else {
+      this.setState({ order: Map() })
     }
 
-    this.setState({ order: Map() })
+    this.context
+      .fetchCars({ available: true })
+      .then(cars => this.setState({ cars: Immutable.fromJS(cars) }))
   }
 
   render() {
     const { order, cars } = this.state
 
     if (!order || !cars) {
-      return null
+      return <Spinner size="big" />
     }
 
     return (

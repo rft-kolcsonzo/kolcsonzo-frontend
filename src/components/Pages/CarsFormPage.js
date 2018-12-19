@@ -5,6 +5,7 @@ import { Map } from 'immutable'
 import { Title } from '../Header'
 import { APIContext } from '../../commons'
 import CarsForm from '../CarsForm'
+import Spinner from '../Spinner'
 
 export default class UsersFormPage extends Component {
   static propTypes = {
@@ -32,7 +33,7 @@ export default class UsersFormPage extends Component {
 
   render() {
     if (!this.state.car) {
-      return null
+      return <Spinner size="big" />
     }
 
     return (

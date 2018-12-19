@@ -8,6 +8,7 @@ import './style.scss'
 import AdminRoute from '../AdminRoute'
 import ErrorBoundary from '../ErrorBoundary'
 import ErrorPage from '../ErrorPage'
+import Spinner from '../Spinner'
 
 const Users = lazy(() => import('../Users'))
 const DashboardHome = lazy(() => import('../DashboardHome'))
@@ -24,7 +25,7 @@ export default function Dashboard({ match, location }) {
       <div className="content-container">
         <Header />
         <div className="content">
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<Spinner size="big" />}>
             <ErrorBoundary fallback={errors => <ErrorPage errors={errors} />}>
               <Switch>
                 <Route
