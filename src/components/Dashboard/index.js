@@ -5,6 +5,7 @@ import NotFoundPage from '../NotFoundPage'
 import Header from '../Header'
 import Menu from '../Menu'
 import './style.scss'
+import AdminRoute from '../AdminRoute'
 
 const Users = lazy(() => import('../Users'))
 const DashboardHome = lazy(() => import('../DashboardHome'))
@@ -27,7 +28,7 @@ export default function Dashboard({ children, match, location }) {
                 path={match.url}
                 component={LazyComponent(DashboardHome)}
               />
-              <Route
+              <AdminRoute
                 path={`${match.url}/users`}
                 component={LazyComponent(Users)}
               />

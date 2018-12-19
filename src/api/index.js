@@ -1,54 +1,215 @@
-import Immutable from 'immutable'
-
-const cars = Immutable.fromJS([
-  {
-    car_id: 1,
-    plate_number: 'PIY-936',
-    modell: '320i (E46)',
-    type: 'BMW',
-    factory_id: 'WBABE7325VKK53716',
-    persons: 5,
-    doors_number: 4,
-    category: 'személyautó',
-    tags: '',
-    color: 'ezüst',
-    born_date: '2004-01-02',
-    insurance_name: 'Allianz',
-    insurance_id: '10547658',
-    insurance_until_date: '2019-09-10',
-    is_valid_insurance: true,
-    car_status_details: '',
-    available_status: 1,
-  },
-])
-
-const users = Immutable.fromJS([
-  {
-    user_id: 1,
-    email: 'teszt@teszt.hu',
-    firstname: 'john',
-    lastname: 'snow',
-    profile_img: null,
-    is_admin: 1,
-    enabled_status: 1,
-    deleted: 0,
-  },
-])
+import {
+  NotFoundError,
+  UnauthorizedError,
+  AuthenticationError,
+  ValidationError,
+} from './errors'
 
 export default class API {
-  async fetchUser() {
-    return users.last()
+  baseUrl = null
+  accessToken = null
+
+  constructor({ baseUrl }) {
+    if (!baseUrl || typeof baseUrl !== 'string') {
+      throw new Error(`baseUrl must be a valid URL, provided: ${baseUrl}`)
+    }
+
+    if (typeof sessionStorage.accessToken === 'string') {
+      this.accessToken = JSON.parse(sessionStorage.accessToken)
+    }
+
+    this.baseUrl = baseUrl.replace(/\/$/, '')
+  }
+
+  get isAuthenticated() {
+    return this.accessToken != null
+  }
+
+  get isAdmin() {
+    return this.isAuthenticated && this.accessToken.is_admin
+  }
+
+  fetch(path, init = {}) {
+    const headers = new Headers(init.headers)
+    let body
+
+    if (init.body) {
+      if (init.body instanceof FormData) {
+        body = init.body
+      } else {
+        body = JSON.stringify(init.body)
+        headers.set('content-type', 'application/json;charset=utf-8')
+      }
+    }
+
+    return fetch(this.baseUrl + path, {
+      ...init,
+      headers,
+      body,
+    }).then(resp => this.handleErrors(resp))
+  }
+
+  signedFetch(path, init = {}) {
+    const headers = new Headers(init.headers)
+
+    if (!this.accessToken) {
+      throw new UnauthorizedError('Authorization is required')
+    }
+
+    const { token, type } = this.accessToken
+    headers.set('Authorization', `${type} ${token}`)
+
+    return this.fetch(path, {
+      ...init,
+      headers,
+    })
+  }
+
+  async handleErrors(orig) {
+    if (!orig.ok) {
+      const resp = orig.clone()
+      const body = await orig.json()
+
+      switch (resp.status) {
+        case 404:
+          throw new NotFoundError(
+            body.message || 'Requested resource could not be found!'
+          )
+        case 401:
+          throw new AuthenticationError(body.message)
+        case 403:
+          throw new UnauthorizedError(body.message)
+        case 406:
+          throw new ValidationError(body.field, body.message)
+        default:
+          throw new Error(body.message || 'General API error!')
+      }
+    }
+    return orig
+  }
+
+  setToken(accessToken) {
+    sessionStorage.accessToken = JSON.stringify(accessToken)
+    this.accessToken = accessToken
+  }
+
+  async login(email, password) {
+    try {
+      const resp = await this.fetch(`/auth/token`, {
+        method: 'POST',
+        body: { email, password },
+      })
+
+      const body = await resp.json()
+
+      this.setToken(body)
+    } catch (e) {
+      if (e instanceof NotFoundError) {
+        return e
+      }
+      throw e
+    }
+
+    return true
+  }
+
+  async fetchUser(id) {
+    const resp = await this.signedFetch(`/users/${id}`)
+
+    return await resp.json()
   }
 
   async fetchUsers() {
-    return users
+    const resp = await this.signedFetch(`/users`)
+
+    return await resp.json()
   }
 
-  async fetchCar() {
-    return cars.last()
+  saveUser(id, body) {
+    if (id) {
+      return this.updateUser(id, body)
+    }
+
+    return this.createUser(body)
+  }
+
+  async updateUser(id, body) {
+    const resp = await this.signedFetch(`/users/${id}`, {
+      method: 'put',
+      body,
+    })
+
+    return await resp.json()
+  }
+
+  async createUser(body) {
+    const resp = await this.signedFetch(`/users`, {
+      method: 'post',
+      body,
+    })
+
+    return await resp.json()
+  }
+
+  async deleteUser(id) {
+    const resp = await this.signedFetch(`/users/${id}`, {
+      method: 'delete',
+    })
+
+    return resp.ok
   }
 
   async fetchCars() {
-    return cars
+    const resp = await this.signedFetch(`/cars`)
+
+    return await resp.json()
   }
+
+  saveCar(id, body) {
+    if (id) {
+      return this.updateCar(id, body)
+    }
+
+    return this.createCar(body)
+  }
+
+  async fetchCar(id) {
+    const resp = await this.signedFetch(`/cars/${id}`)
+
+    return await resp.json()
+  }
+
+  async updateCar(id, body) {
+    const resp = await this.signedFetch(`/cars/${id}`, {
+      method: 'put',
+      body,
+    })
+
+    return await resp.json()
+  }
+
+  async createCar(body) {
+    const resp = await this.signedFetch(`/cars`, {
+      method: 'post',
+      body,
+    })
+
+    return await resp.json()
+  }
+
+  async deleteCar(id) {
+    const resp = await this.signedFetch(`/cars/${id}`, {
+      method: 'delete',
+    })
+
+    return resp.ok
+  }
+
+  // async fetchCar() {
+  //   return cars.last()
+  // }
+
+  // async fetchCars() {
+  //   return cars
+  // }
 }

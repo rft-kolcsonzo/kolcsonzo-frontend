@@ -4,11 +4,15 @@ import Table, { Row, Column, Header, HeaderColumn } from '../Table'
 import TableRowControls from '../TableRowControls'
 import TickIcon from '../../assets/img/tick_black.svg'
 
-export default function UsersList({ users }) {
+export default function UsersList({ users, deleteCar }) {
   function renderRow({ data: car, ...otherProps }) {
     const carId = car.get('car_id')
 
-    function handleCarDelete() {}
+    function handleCarDelete() {
+      if (window.confirm('Biztosan törölni akarja ezt az autót?')) {
+        deleteCar(carId)
+      }
+    }
 
     return (
       <Row key={carId}>
@@ -17,8 +21,8 @@ export default function UsersList({ users }) {
         <Column>{car.get('modell')}</Column>
         <Column>{car.get('category')}</Column>
         <Column>{car.get('color')}</Column>
-        <Column>
-          {car.get('is_valid_insurance') ? <img src={TickIcon} alt="" /> : null}
+        <Column style={{ textAlign: 'center' }}>
+          {car.get('insurance_status') ? <img src={TickIcon} alt="" /> : null}
         </Column>
         <Column>
           <TableRowControls

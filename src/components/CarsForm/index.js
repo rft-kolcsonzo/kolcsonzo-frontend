@@ -1,25 +1,32 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Map } from 'immutable'
+import { withRouter } from 'react-router-dom'
 
 import Form, {
   ValidatorFactory,
   FormElement,
   FormRow,
   FormButtonBar,
+  JSONData,
 } from '../Form'
 import TextInput from '../TextInput'
 import Button from '../Button'
 import Checkbox from '../Checkbox'
 import DropDown, { Value } from '../DropDown'
+import { APIContext } from '../../commons'
+import { ValidationError } from '../../api/errors'
 
-export default class CarsForm extends Component {
+class CarsForm extends Component {
+  static contextType = APIContext
   static propTypes = {
-    car: PropTypes.instanceOf(Map),
+    car: PropTypes.instanceOf(Map).isRequired,
+    isNew: PropTypes.bool,
   }
 
   state = {
     errors: [],
+    loading: false,
   }
 
   form = React.createRef()
@@ -47,14 +54,29 @@ export default class CarsForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
+    const { car, history } = this.props
+    const data = new JSONData(e.target)
+
+    this.setState({ loading: true })
     e.preventDefault()
 
-    console.log('SUCCESS')
+    try {
+      await this.context.saveCar(car.get('car_id'), data)
+
+      history.push('/-/cars')
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        this.setState({ errors: [[err.field, err.message]] })
+        return
+      }
+      throw err
+    }
   }
 
   render() {
     const { car } = this.props
+    const { loading } = this.state
 
     return (
       <Form onSubmit={this.handleSubmit} validator={this.validator}>
@@ -65,18 +87,28 @@ export default class CarsForm extends Component {
               defaultValue={car.get('plate_number')}
             />
           </FormElement>
-          <FormElement name="modell" label="Model">
-            <TextInput name="modell" defaultValue={car.get('modell')} />
-          </FormElement>
-        </FormRow>
-        <FormRow>
           <FormElement name="type" label="Gyártó">
             <TextInput name="type" defaultValue={car.get('type')} />
           </FormElement>
-        </FormRow>
-        <FormRow>
+          <FormElement name="modell" label="Model">
+            <TextInput name="modell" defaultValue={car.get('modell')} />
+          </FormElement>
           <FormElement name="factory_id" label="Alvázszám">
             <TextInput name="factory_id" defaultValue={car.get('factory_id')} />
+          </FormElement>
+        </FormRow>
+        <FormRow>
+          <FormElement name="category" label="Típus">
+            <DropDown name="category" defaultValue={car.get('category')}>
+              <Value value="personal">személyautó</Value>
+              <Value value="commercial">haszonjármű</Value>
+            </DropDown>
+          </FormElement>
+          <FormElement name="color" label="Szín">
+            <TextInput name="color" defaultValue={car.get('color')} />
+          </FormElement>
+          <FormElement name="born_date" label="Gyártás dátuma">
+            <TextInput name="born_date" defaultValue={car.get('born_date')} />
           </FormElement>
         </FormRow>
         <FormRow>
@@ -93,28 +125,14 @@ export default class CarsForm extends Component {
               <Value value={5}>5</Value>
             </DropDown>
           </FormElement>
-          <FormElement name="category" label="Típus">
-            <DropDown name="category" defaultValue={car.get('category')}>
-              <Value value="personal">személyautó</Value>
-              <Value value="commercial">haszonjármű</Value>
-            </DropDown>
-          </FormElement>
         </FormRow>
         <FormRow>
-          <FormElement name="color" label="Szín">
-            <TextInput name="color" defaultValue={car.get('color')} />
-          </FormElement>
-          <FormElement name="born_date" label="Gyártás dátuma">
-            <TextInput name="born_date" defaultValue={car.get('born_date')} />
-          </FormElement>
           <FormElement name="insurance_name" label="Biztosító neve">
             <TextInput
               name="insurance_name"
               defaultValue={car.get('insurance_name')}
             />
           </FormElement>
-        </FormRow>
-        <FormRow>
           <FormElement name="insurance_id" label="Biztosítás sz. száma">
             <TextInput
               name="insurance_id"
@@ -148,9 +166,13 @@ export default class CarsForm extends Component {
           />
         </div>
         <FormButtonBar>
-          <Button>Mentés</Button>
+          <Button loading={loading} disabled={loading}>
+            Mentés
+          </Button>
         </FormButtonBar>
       </Form>
     )
   }
 }
+
+export default withRouter(CarsForm)

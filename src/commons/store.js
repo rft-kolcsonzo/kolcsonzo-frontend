@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from '../reducers'
 import thunk from 'redux-thunk'
+import { Map } from 'immutable'
 
 const middlewares = [thunk]
 const storeEnhancers = []
@@ -12,13 +13,20 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const middlewareEnhancers = applyMiddleware(...middlewares)
+const prepareInitialState = state => {
+  const prepared = {}
+
+  Object.keys(state).forEach(key => (prepared[key] = Map(state[key])))
+
+  return prepared
+}
 
 storeEnhancers.unshift(middlewareEnhancers)
 
 export const configureStore = (initialState = {}) => {
   const store = createStore(
     rootReducer,
-    initialState,
+    prepareInitialState(initialState),
     compose(...storeEnhancers)
   )
 

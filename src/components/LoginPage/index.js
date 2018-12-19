@@ -1,11 +1,6 @@
-import React from 'react'
-import LoginBox from '../LoginBox'
-import './style.scss'
+import { connect } from 'react-redux'
+import LoginPage from './component'
 
-export default function LoginPage(props) {
-  return (
-    <div className="login-page">
-      <LoginBox />
-    </div>
-  )
-}
+export default connect(state => ({
+  isAuthenticated: state.app.get('authenticated'),
+}))(LoginPage)

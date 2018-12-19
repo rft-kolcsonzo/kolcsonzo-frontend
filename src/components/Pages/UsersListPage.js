@@ -13,6 +13,12 @@ export default class UsersListPage extends Component {
 
   static contextType = APIContext
 
+  constructor(props) {
+    super(props)
+
+    this.deleteUser = this.deleteUser.bind(this)
+  }
+
   async componentDidMount() {
     this.setState({ users: Immutable.fromJS(await this.context.fetchUsers()) })
   }
@@ -21,12 +27,22 @@ export default class UsersListPage extends Component {
     return !Immutable.is(this.state.users, nextState.users)
   }
 
+  async deleteUser(userId) {
+    this.setState({
+      users: this.state.users.filter(user => user.get('user_id') !== userId),
+    })
+
+    await this.context.deleteUser(userId)
+
+    this.setState({ users: Immutable.fromJS(await this.context.fetchUsers()) })
+  }
+
   render() {
     return (
       <>
         <Title>Felhasználók</Title>
         <NavButton to="/-/users/create">Új felhasználó</NavButton>
-        <UsersList users={this.state.users} />
+        <UsersList users={this.state.users} deleteUser={this.deleteUser} />
       </>
     )
   }

@@ -7,10 +7,20 @@ import { configureStore, configureAPI, APIContext } from './commons'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
+const apiClient = configureAPI({
+  baseUrl: process.env.REACT_APP_API_BASE_URL || '/',
+})
+const initialState = {
+  app: {
+    authenticated: apiClient.isAuthenticated,
+    isAdmin: apiClient.isAdmin,
+  },
+}
+
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={configureStore()}>
-      <APIContext.Provider value={configureAPI()}>
+    <Provider store={configureStore(initialState)}>
+      <APIContext.Provider value={apiClient}>
         <App />
       </APIContext.Provider>
     </Provider>

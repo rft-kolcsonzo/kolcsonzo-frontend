@@ -3,4 +3,4 @@ import API from '../api'
 
 export const APIContext = createContext(null)
 
-export const configureAPI = options => new API(options)
+export const configureAPI = (options = {}) => new API(options)

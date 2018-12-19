@@ -14,13 +14,16 @@ export default class UsersFormPage extends Component {
   static contextType = APIContext
 
   state = {
-    car: Map({}),
+    car: null,
   }
 
   async componentDidMount() {
     if (this.carId) {
-      this.setState({ car: await this.context.fetchCar(this.carId) })
+      this.setState({ car: Map(await this.context.fetchCar(this.carId)) })
+      return
     }
+
+    this.setState({ car: Map({}) })
   }
 
   get carId() {
@@ -28,12 +31,16 @@ export default class UsersFormPage extends Component {
   }
 
   render() {
+    if (!this.state.car) {
+      return null
+    }
+
     return (
       <>
         <Title>
-          {this.userId ? 'Gépkocsi módosítása' : 'Gépkocsi létrehozása'}
+          {this.carId ? 'Gépkocsi módosítása' : 'Gépkocsi létrehozása'}
         </Title>
-        <CarsForm car={this.state.car} />
+        <CarsForm car={this.state.car} isNew={!this.carId} />
       </>
     )
   }

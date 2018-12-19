@@ -4,11 +4,15 @@ import Table, { Row, Column, Header, HeaderColumn } from '../Table'
 import TableRowControls from '../TableRowControls'
 import TickIcon from '../../assets/img/tick_black.svg'
 
-export default function UsersList({ users }) {
+export default function UsersList({ users, deleteUser }) {
   function renderRow({ data: user, ...otherProps }) {
     const userId = user.get('user_id')
 
-    function handleUserDelete() {}
+    function handleUserDelete() {
+      if (window.confirm('Biztosan törölni akarja ezt a felhasználót?')) {
+        deleteUser(userId)
+      }
+    }
 
     return (
       <Row key={userId}>

@@ -82,7 +82,7 @@ export default class ValidatorFactory {
   }
 
   custom(validator) {
-    this.reset()
+    this.field = null
 
     if (typeof validator !== 'function') {
       throw new Error('Custom validator must be a function')
@@ -95,6 +95,7 @@ export default class ValidatorFactory {
 
   create() {
     const validators = [...this.validators]
+
     this.reset()
 
     return data =>

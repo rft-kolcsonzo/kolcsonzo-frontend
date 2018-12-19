@@ -6,6 +6,7 @@ export { default as FormElement } from './FormElement'
 export { default as FormRow } from './FormRow'
 export { default as FormButtonBar } from './FormButtonBar'
 export { default as ValidatorFactory } from './validator'
+export { default as JSONData } from './jsondata'
 
 class Form extends PureComponent {
   state = {
@@ -55,13 +56,14 @@ class Form extends PureComponent {
       onError,
       onSubmit,
       children,
+      errors: externalErrors = [],
       ...otherProps
     } = this.props
     const { formRef, errors } = this.state
 
     return (
       <form ref={formRef} {...otherProps} onSubmit={this.handleSubmit}>
-        <FormErrorContext.Provider value={errors}>
+        <FormErrorContext.Provider value={[...externalErrors, ...errors]}>
           {children}
         </FormErrorContext.Provider>
       </form>
