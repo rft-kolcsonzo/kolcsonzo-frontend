@@ -37,7 +37,7 @@ export default class UsersFormPage extends Component {
 
     return (
       <>
-        <Title>
+        <Title canGoBack>
           {this.carId ? 'Gépkocsi módosítása' : 'Gépkocsi létrehozása'}
         </Title>
         <CarsForm car={this.state.car} isNew={!this.carId} />

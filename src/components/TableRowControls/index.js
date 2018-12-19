@@ -6,7 +6,14 @@ import IconButton from '../IconButton'
 import EditIcon from '../../assets/img/edit.svg'
 import DeleteIcon from '../../assets/img/delete.svg'
 
-function TableRowControls({ onEdit, onDelete, editUrl, deleteUrl, history }) {
+function TableRowControls({
+  onEdit,
+  onDelete,
+  editUrl,
+  deleteUrl,
+  history,
+  children,
+}) {
   function handleEditClick() {
     if (typeof onEdit === 'function') {
       onEdit()
@@ -42,6 +49,7 @@ function TableRowControls({ onEdit, onDelete, editUrl, deleteUrl, history }) {
           onClick={handleDeleteClick}
         />
       ) : null}
+      {children}
     </div>
   )
 }

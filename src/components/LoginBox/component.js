@@ -36,7 +36,7 @@ export default class LoginBox extends PureComponent {
     this.setState({ loading: false, error: null })
 
     if (resp === true) {
-      setAuthState(true)
+      setAuthState(true, this.context.isAdmin)
     } else {
       this.setState({ error: resp.message })
     }

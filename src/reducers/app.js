@@ -5,10 +5,12 @@ import {
   TOGGLE_MENU_VISIBILITY,
   SET_TITLE,
   SET_AUTH_STATE,
+  SET_BACK_STATE,
 } from '../action-types'
 
 const initialState = new Map({
   title: '',
+  canGoBack: false,
   menuOpen: false,
   authenticated: false,
   isAdmin: false,
@@ -21,4 +23,5 @@ export default createReducer(initialState, {
   [SET_TITLE]: (state, title) => state.set('title', title),
   [SET_AUTH_STATE]: (state, { isAuthenticated, isAdmin }) =>
     state.set('authenticated', isAuthenticated).set('isAdmin', isAdmin),
+  [SET_BACK_STATE]: (state, canGoBack) => state.set('canGoBack', canGoBack),
 })

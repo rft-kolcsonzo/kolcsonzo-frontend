@@ -3,6 +3,7 @@ import {
   TOGGLE_MENU_VISIBILITY,
   SET_TITLE,
   SET_AUTH_STATE,
+  SET_BACK_STATE,
 } from '../action-types'
 
 export const toggleMenuVisibility = () => ({
@@ -17,6 +18,11 @@ export const setMenuVisibility = visible => ({
 export const setTitle = title => ({
   type: SET_TITLE,
   payload: title,
+})
+
+export const setBackState = canGoBack => ({
+  type: SET_BACK_STATE,
+  payload: canGoBack,
 })
 
 export const setAuthState = (isAuthenticated, isAdmin = false) => ({

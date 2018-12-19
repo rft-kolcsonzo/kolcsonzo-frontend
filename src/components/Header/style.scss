@@ -9,6 +9,25 @@
   align-items: center;
   margin-bottom: 20px;
 
+  .left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .back-button {
+      margin-left: -20px;
+      margin-right: 5px;
+      padding-top: 10px;
+      visibility: hidden;
+      z-index: -1;
+
+      &.visible {
+        visibility: visible;
+        z-index: inherit;
+      }
+    }
+  }
+
   .menu-btn {
     display: none;
 
@@ -18,8 +37,15 @@
   }
 
   @include mobile {
-    h1 {
-      font-size: 20px;
+    .left {
+      .back-button img {
+        height: 21px;
+      }
+
+      h1 {
+        font-size: 20px;
+        line-height: 21px;
+      }
     }
   }
 }

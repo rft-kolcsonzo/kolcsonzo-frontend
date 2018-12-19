@@ -66,6 +66,8 @@ class CarsForm extends Component {
 
       history.push('/-/cars')
     } catch (err) {
+      this.setState({ loading: false })
+
       if (err instanceof ValidationError) {
         this.setState({ errors: [[err.field, err.message]] })
         return
@@ -76,10 +78,14 @@ class CarsForm extends Component {
 
   render() {
     const { car } = this.props
-    const { loading } = this.state
+    const { loading, errors } = this.state
 
     return (
-      <Form onSubmit={this.handleSubmit} validator={this.validator}>
+      <Form
+        errors={errors}
+        onSubmit={this.handleSubmit}
+        validator={this.validator}
+      >
         <FormRow>
           <FormElement name="plate_number" label="Rendszám">
             <TextInput
@@ -107,13 +113,21 @@ class CarsForm extends Component {
           <FormElement name="color" label="Szín">
             <TextInput name="color" defaultValue={car.get('color')} />
           </FormElement>
-          <FormElement name="born_date" label="Gyártás dátuma">
-            <TextInput name="born_date" defaultValue={car.get('born_date')} />
+          <FormElement name="born_date" label="Forgalomba helyezés dátuma">
+            <TextInput
+              name="born_date"
+              mask="9999-99-99"
+              defaultValue={car.get('born_date')}
+            />
           </FormElement>
         </FormRow>
         <FormRow>
           <FormElement name="persons" label="Szállítható személyek száma">
-            <TextInput name="persons" defaultValue={car.get('persons')} />
+            <TextInput
+              type="number"
+              name="persons"
+              defaultValue={car.get('persons')}
+            />
           </FormElement>
           <FormElement name="doors_number" label="Ajtók száma">
             <DropDown

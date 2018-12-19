@@ -6,42 +6,47 @@ import Header from '../Header'
 import Menu from '../Menu'
 import './style.scss'
 import AdminRoute from '../AdminRoute'
+import ErrorBoundary from '../ErrorBoundary'
+import ErrorPage from '../ErrorPage'
 
 const Users = lazy(() => import('../Users'))
 const DashboardHome = lazy(() => import('../DashboardHome'))
 const Cars = lazy(() => import('../Cars'))
+const Orders = lazy(() => import('../Orders'))
 
 function LazyComponent(Component) {
   return props => <Component {...props} />
 }
 
-export default function Dashboard({ children, match, location }) {
+export default function Dashboard({ match, location }) {
   return (
     <div className="fill-window dashboard">
       <div className="content-container">
         <Header />
         <div className="content">
           <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              <Route
-                exact
-                path={match.url}
-                component={LazyComponent(DashboardHome)}
-              />
-              <AdminRoute
-                path={`${match.url}/users`}
-                component={LazyComponent(Users)}
-              />
-              <Route
-                path={`${match.url}/cars`}
-                component={LazyComponent(Cars)}
-              />
-              <Route
-                path={`${match.url}/orders`}
-                component={() => <div>hi</div>}
-              />
-              <Route component={NotFoundPage} />
-            </Switch>
+            <ErrorBoundary fallback={errors => <ErrorPage errors={errors} />}>
+              <Switch>
+                <Route
+                  exact
+                  path={match.url}
+                  component={LazyComponent(DashboardHome)}
+                />
+                <AdminRoute
+                  path={`${match.url}/users`}
+                  component={LazyComponent(Users)}
+                />
+                <Route
+                  path={`${match.url}/cars`}
+                  component={LazyComponent(Cars)}
+                />
+                <Route
+                  path={`${match.url}/orders`}
+                  component={LazyComponent(Orders)}
+                />
+                <Route component={NotFoundPage} />
+              </Switch>
+            </ErrorBoundary>
           </Suspense>
         </div>
       </div>

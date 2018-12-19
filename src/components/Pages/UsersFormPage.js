@@ -41,7 +41,7 @@ export default class UsersFormPage extends Component {
 
     return (
       <>
-        <Title>
+        <Title canGoBack>
           {this.userId ? 'Felhasználó módosítása' : 'Felhasználó létrehozása'}
         </Title>
         <UsersForm user={this.state.user} newUser={!this.userId} />

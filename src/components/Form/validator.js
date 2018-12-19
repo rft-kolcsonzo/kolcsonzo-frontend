@@ -31,6 +31,24 @@ export default class ValidatorFactory {
     return this
   }
 
+  notNull(message) {
+    const fields = this.current
+
+    fields.forEach(name =>
+      this.validators.push(data => {
+        const value = data.get(name)
+
+        if (value != null) {
+          return true
+        }
+
+        return [name, message || `${name} cannot be null!`]
+      })
+    )
+
+    return this
+  }
+
   notEmpty(message) {
     const fields = this.current
 

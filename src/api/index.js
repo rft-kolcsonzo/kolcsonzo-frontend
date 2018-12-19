@@ -4,6 +4,7 @@ import {
   AuthenticationError,
   ValidationError,
 } from './errors'
+import queryString from 'query-string'
 
 export default class API {
   baseUrl = null
@@ -159,8 +160,12 @@ export default class API {
     return resp.ok
   }
 
-  async fetchCars() {
-    const resp = await this.signedFetch(`/cars`)
+  async fetchCars(filter) {
+    let query = ''
+    if (filter) {
+      query = '?' + queryString.stringify(filter)
+    }
+    const resp = await this.signedFetch(`/cars${query}`)
 
     return await resp.json()
   }
@@ -203,6 +208,56 @@ export default class API {
     })
 
     return resp.ok
+  }
+
+  saveOrder(id, body) {
+    if (id) {
+      return this.updateOrder(id, body)
+    }
+
+    return this.createOrder(body)
+  }
+
+  async updateOrder(id, body) {
+    const resp = await this.signedFetch(`/orders/${id}`, {
+      method: 'put',
+      body,
+    })
+
+    return resp.json()
+  }
+
+  async createOrder(body) {
+    const resp = await this.signedFetch(`/orders`, {
+      method: 'post',
+      body,
+    })
+
+    return resp.json()
+  }
+
+  async fetchOrders() {
+    const resp = await this.signedFetch('/orders')
+
+    return await resp.json()
+  }
+
+  async fetchOrder(id) {
+    const resp = await this.signedFetch(`/orders/${id}`)
+
+    return await resp.json()
+  }
+
+  urlForOrderPdf(id) {
+    if (!this.accessToken) {
+      throw new UnauthorizedError('Authorization is required')
+    }
+
+    const query = queryString.stringify({
+      access_token: this.accessToken.token,
+    })
+
+    return `${this.baseUrl}/orders/${id}/pdf?${query}`
   }
 
   // async fetchCar() {

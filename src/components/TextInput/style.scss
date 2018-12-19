@@ -24,6 +24,15 @@
   font-weight: 500;
   color: #234ef8;
   box-sizing: border-box;
+  user-select: none;
+  box-shadow: none;
+  appearance: none;
+
+  &[disabled] {
+    background-color: #efefef;
+    border-color: #d0d0d0;
+    color: #d0d0d0;
+  }
 
   @include placeholder {
     font-family: 'Barlow', sans-serif;

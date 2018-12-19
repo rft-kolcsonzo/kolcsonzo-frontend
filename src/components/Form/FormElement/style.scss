@@ -18,6 +18,13 @@
     color: #8b959c;
   }
 
+  label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 44px;
+  }
+
   .error-container {
     z-index: 1;
     background: #f72121;
@@ -90,7 +97,8 @@
       margin-left: 5px;
     }
 
-    .input {
+    .input,
+    .drop-down select {
       border-color: #f72121;
     }
 

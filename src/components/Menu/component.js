@@ -51,7 +51,7 @@ class Menu extends Component {
                   className="menu-button"
                   activeClassName="active"
                 >
-                  Felhasználók
+                  Dolgozók
                 </NavLink>
               </li>
             )}
