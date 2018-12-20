@@ -260,6 +260,14 @@ export default class API {
     return `${this.baseUrl}/orders/${id}/pdf?${query}`
   }
 
+  async deleteOrder(id) {
+    const resp = await this.signedFetch(`/orders/${id}`, {
+      method: 'delete',
+    })
+
+    return resp.ok
+  }
+
   // async fetchCar() {
   //   return cars.last()
   // }

@@ -36,7 +36,7 @@ export default class OrdersListPage extends Component {
       ),
     })
 
-    await this.context.deleteUser(orderId)
+    await this.context.deleteOrder(orderId)
 
     this.setState({
       orders: Immutable.fromJS(await this.context.fetchOrders()),
@@ -50,7 +50,7 @@ export default class OrdersListPage extends Component {
         <NavButton to="/-/orders/create">Új bérlés</NavButton>
         <OrderList
           orders={this.state.orders}
-          deleteUser={this.deleteOrder}
+          deleteOrder={this.deleteOrder}
           getPrintUrl={id => this.context.urlForOrderPdf(id)}
         />
       </>
